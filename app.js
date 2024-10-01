@@ -47,16 +47,7 @@ app.get("/service", function (req, res) {
     res.send(xml);
   } else {
     res.type("text");
-    res.send(`
-      <h1>ASPHarmony SOAP Service</h1>
-      <p>This is the entry point for the ASPHarmony SOAP Web Service.</p>
-      <p>To view the WSDL, add ?wsdl to the URL.</p>
-      <p>Available operations:</p>
-      <ul>
-        <li>GetServiceInfo</li>
-        <li>AddNumbers</li>
-      </ul>
-    `);
+    res.send(`To view the WSDL, add ?wsdl to the URL.`);
   }
 });
 
