@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:tns="http://www.example.com/ASPHarmony"
+                  targetNamespace="http://www.example.com/ASPHarmony">
+
+  <wsdl:types>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.com/ASPHarmony">
+      <xsd:element name="GetServiceInfoRequest" />
+      <xsd:element name="GetServiceInfoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Service" type="xsd:string"/>
+            <xsd:element name="Version" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      
+      <xsd:element name="AddNumbersRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="a" type="xsd:int"/>
+            <xsd:element name="b" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="AddNumbersResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="AddResult" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+
+  <wsdl:message name="GetServiceInfoInput">
+    <wsdl:part name="body" element="tns:GetServiceInfoRequest"/>
+  </wsdl:message>
+  <wsdl:message name="GetServiceInfoOutput">
+    <wsdl:part name="body" element="tns:GetServiceInfoResponse"/>
+  </wsdl:message>
+  
+  <wsdl:message name="AddNumbersInput">
+    <wsdl:part name="body" element="tns:AddNumbersRequest"/>
+  </wsdl:message>
+  <wsdl:message name="AddNumbersOutput">
+    <wsdl:part name="body" element="tns:AddNumbersResponse"/>
+  </wsdl:message>
+
+  <wsdl:portType name="ASPHarmonyPortType">
+    <wsdl:operation name="GetServiceInfo">
+      <wsdl:input message="tns:GetServiceInfoInput"/>
+      <wsdl:output message="tns:GetServiceInfoOutput"/>
+    </wsdl:operation>
+    <wsdl:operation name="AddNumbers">
+      <wsdl:input message="tns:AddNumbersInput"/>
+      <wsdl:output message="tns:AddNumbersOutput"/>
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:binding name="ASPHarmonyBinding" type="tns:ASPHarmonyPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetServiceInfo">
+      <soap:operation soapAction="http://www.example.com/ASPHarmony/GetServiceInfo"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddNumbers">
+      <soap:operation soapAction="http://www.example.com/ASPHarmony/AddNumbers"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:service name="ASPHarmonyService">
+    <wsdl:port name="ASPHarmonyPort" binding="tns:ASPHarmonyBinding">
+      <soap:address location="http://localhost:3000/service"/>
+    </wsdl:port>
+  </wsdl:service>
+
+</wsdl:definitions>

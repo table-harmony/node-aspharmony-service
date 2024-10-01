@@ -1,16 +1,22 @@
 {
   "name": "node-aspharmony-service",
   "version": "1.0.0",
-  "description": "",
+  "description": "SOAP Web Service for ASPHarmony",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
   },
-  "keywords": [],
+  "keywords": [
+    "soap",
+    "webservice",
+    "aspnet"
+  ],
   "author": "TableHarmony",
   "license": "ISC",
   "dependencies": {
     "express": "^4.21.0",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "soap": "^0.45.0",
+    "body-parser": "^1.19.0"
   }
 }
