@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(
   bodyParser.raw({
-    type: function () {
+    type: () => {
       return true;
     },
     limit: "5mb",
@@ -41,7 +41,7 @@ const xml = require("fs").readFileSync("service.wsdl", "utf8");
 soap.listen(app, "/service", serviceObject, xml);
 
 // Serve WSDL file or service information
-app.get("/service", function (req, res) {
+app.get("/service", (req, res) => {
   if (req.query.wsdl !== undefined) {
     res.type("application/xml");
     res.send(xml);
@@ -51,6 +51,10 @@ app.get("/service", function (req, res) {
   }
 });
 
-app.listen(port, () => {
+app.get("/", (req, res) => {
+  res.send("Hello");
+});
+
+app.listen(port, "0.0.0.0", () => {
   console.log(`SOAP Service running at port: ${port}`);
 });
