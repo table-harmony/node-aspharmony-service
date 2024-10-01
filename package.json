@@ -7,7 +7,7 @@
     "start": "node app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "TableHarmony",
   "license": "ISC",
   "dependencies": {
     "express": "^4.21.0",
