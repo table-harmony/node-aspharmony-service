@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
                   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-                  xmlns:tns="http://www.example.com/ASPHarmony"
-                  targetNamespace="http://www.example.com/ASPHarmony">
+                  xmlns:tns="https://aspharmony-production.up.railway.app/"
+                  targetNamespace="https://aspharmony-production.up.railway.app/">
 
   <wsdl:types>
-    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.com/ASPHarmony">
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="https://aspharmony-production.up.railway.app/">
       <xsd:element name="GetServiceInfoRequest" />
       <xsd:element name="GetServiceInfoResponse">
         <xsd:complexType>
@@ -27,7 +27,16 @@
       <xsd:element name="AddNumbersResponse">
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="AddResult" type="xsd:int"/>
+            <xsd:element name="result" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="GenerateJokeRequest" />
+      <xsd:element name="GenerateJokeResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="joke" type="xsd:string"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -48,7 +57,14 @@
     <wsdl:part name="body" element="tns:AddNumbersResponse"/>
   </wsdl:message>
 
-  <wsdl:portType name="ASPHarmonyPortType">
+  <wsdl:message name="GenerateJokeInput">
+    <wsdl:part name="body" element="tns:GenerateJokeRequest"/>
+  </wsdl:message>
+  <wsdl:message name="GenerateJokeOutput">
+    <wsdl:part name="body" element="tns:GenerateJokeResponse"/>
+  </wsdl:message>
+
+  <wsdl:portType name="AspHarmonyPortType">
     <wsdl:operation name="GetServiceInfo">
       <wsdl:input message="tns:GetServiceInfoInput"/>
       <wsdl:output message="tns:GetServiceInfoOutput"/>
@@ -57,25 +73,34 @@
       <wsdl:input message="tns:AddNumbersInput"/>
       <wsdl:output message="tns:AddNumbersOutput"/>
     </wsdl:operation>
+    <wsdl:operation name="GenerateJoke">
+      <wsdl:input message="tns:GenerateJokeInput"/>
+      <wsdl:output message="tns:GenerateJokeOutput"/>
+    </wsdl:operation>
   </wsdl:portType>
 
-  <wsdl:binding name="ASPHarmonyBinding" type="tns:ASPHarmonyPortType">
+  <wsdl:binding name="AspHarmonyBinding" type="tns:AspHarmonyPortType">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsdl:operation name="GetServiceInfo">
-      <soap:operation soapAction="http://www.example.com/ASPHarmony/GetServiceInfo"/>
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/GetServiceInfo"/>
       <wsdl:input><soap:body use="literal"/></wsdl:input>
       <wsdl:output><soap:body use="literal"/></wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="AddNumbers">
-      <soap:operation soapAction="http://www.example.com/ASPHarmony/AddNumbers"/>
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/AddNumbers"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateJoke">
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/GenerateJoke"/>
       <wsdl:input><soap:body use="literal"/></wsdl:input>
       <wsdl:output><soap:body use="literal"/></wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
 
-  <wsdl:service name="ASPHarmonyService">
-    <wsdl:port name="ASPHarmonyPort" binding="tns:ASPHarmonyBinding">
-      <soap:address location="http://localhost:3000/service"/>
+  <wsdl:service name="AspHarmonyService">
+    <wsdl:port name="AspHarmonyPort" binding="tns:AspHarmonyBinding">
+      <soap:address location="https://aspharmony-production.up.railway.app/service"/>
     </wsdl:port>
   </wsdl:service>
 

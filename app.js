@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const soap = require("soap");
 const bodyParser = require("body-parser");
+const fs = require("fs");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -9,33 +10,43 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(
   bodyParser.raw({
-    type: () => {
-      return true;
-    },
+    type: () => true,
     limit: "5mb",
   })
 );
 
-// SOAP service
 const serviceObject = {
-  ASPHarmonyService: {
-    ASPHarmonyPort: {
-      GetServiceInfo: function (args) {
+  AspHarmonyService: {
+    AspHarmonyPort: {
+      GetServiceInfo: () => {
         return {
-          Service: "ASPHarmony",
+          Service: "AspHarmony",
           Version: "1.0.0",
         };
       },
-      AddNumbers: function (args) {
+      AddNumbers: (args) => {
         const result = args.a + args.b;
-        return { AddResult: result };
+        return { result: result };
+      },
+      GenerateJoke: async () => {
+        try {
+          const response = await fetch(
+            "https://v2.jokeapi.dev/joke/Any?type=single"
+          );
+          const data = await response.json();
+
+          return { joke: data.joke };
+        } catch (error) {
+          console.error(error);
+          return { joke: "No joke found" };
+        }
       },
     },
   },
 };
 
 // WSDL definition
-const xml = require("fs").readFileSync("service.wsdl", "utf8");
+const xml = fs.readFileSync("service.wsdl", "utf8");
 
 // Create SOAP server
 soap.listen(app, "/service", serviceObject, xml);
@@ -47,14 +58,14 @@ app.get("/service", (req, res) => {
     res.send(xml);
   } else {
     res.type("text");
-    res.send(`To view the WSDL, add ?wsdl to the URL.`);
+    res.send("To view the WSDL, add ?wsdl to the URL.");
   }
 });
 
 app.get("/", (req, res) => {
-  res.send("Hello");
+  res.send("This is AspHarmony SOAP Service");
 });
 
-app.listen(port, "0.0.0.0", () => {
+app.listen(port, () => {
   console.log(`SOAP Service running at port: ${port}`);
 });
