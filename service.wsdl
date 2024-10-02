@@ -32,7 +32,11 @@
         </xsd:complexType>
       </xsd:element>
 
-      <xsd:element name="GenerateJokeRequest" />
+      <xsd:element name="GenerateJokeRequest">
+        <xsd:complexType>
+          <!-- Empty complex type as the request doesn't need any parameters -->
+        </xsd:complexType>
+      </xsd:element>
       <xsd:element name="GenerateJokeResponse">
         <xsd:complexType>
           <xsd:sequence>

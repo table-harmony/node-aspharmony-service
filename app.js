@@ -3,7 +3,6 @@ const cors = require("cors");
 const soap = require("soap");
 const bodyParser = require("body-parser");
 const fs = require("fs");
-const { create } = require("xmlbuilder2");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -20,27 +19,11 @@ const serviceObject = {
   AspHarmonyService: {
     AspHarmonyPort: {
       GetServiceInfo: () => {
-        const xml = create({ version: "1.0", encoding: "UTF-8" })
-          .ele("GetServiceInfoResponse")
-          .ele("Service")
-          .txt("AspHarmony")
-          .up()
-          .ele("Version")
-          .txt("1.0.0")
-          .end({ prettyPrint: true });
-
-        return xml;
+        return { Service: "AspHarmony", Version: "1.0.0" };
       },
       AddNumbers: (args) => {
         const result = args.a + args.b;
-
-        const xml = create({ version: "1.0", encoding: "UTF-8" })
-          .ele("AddNumbersResponse")
-          .ele("result")
-          .txt(result.toString())
-          .end({ prettyPrint: true });
-
-        return xml;
+        return { result };
       },
       GenerateJoke: async () => {
         try {
@@ -48,23 +31,10 @@ const serviceObject = {
             "https://v2.jokeapi.dev/joke/Any?type=single"
           );
           const data = await response.json();
-
-          const xml = create({ version: "1.0", encoding: "UTF-8" })
-            .ele("GenerateJokeResponse")
-            .ele("joke")
-            .txt(data.joke)
-            .end({ prettyPrint: true });
-
-          return xml;
+          return { joke: data.joke };
         } catch (error) {
           console.error(error);
-          const xml = create({ version: "1.0", encoding: "UTF-8" })
-            .ele("GenerateJokeResponse")
-            .ele("joke")
-            .txt("No joke found")
-            .end({ prettyPrint: true });
-
-          return xml;
+          return { joke: "No joke found" };
         }
       },
     },
