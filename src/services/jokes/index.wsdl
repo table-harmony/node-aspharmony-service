@@ -2,11 +2,13 @@
 <wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
                   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
                   xmlns:s="http://www.w3.org/2001/XMLSchema"
-                  xmlns:tns="http://tempuri.org/"
-                  targetNamespace="http://tempuri.org/">
+                  xmlns:tns="https://aspharmony-production.up.railway.app/"
+                  targetNamespace="https://aspharmony-production.up.railway.app/">
 
+  <!-- Types (Data Structures) -->
   <wsdl:types>
-    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+    <s:schema elementFormDefault="qualified" targetNamespace="https://aspharmony-production.up.railway.app/">
+      
       <!-- GetInfo Operation -->
       <s:element name="GetInfo">
         <s:complexType/>
@@ -120,22 +122,22 @@
   <wsdl:binding name="JokesServiceSoap" type="tns:JokesServiceSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsdl:operation name="GetInfo">
-      <soap:operation soapAction="http://tempuri.org/GetInfo" style="document"/>
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/GetInfo" style="document"/>
       <wsdl:input><soap:body use="literal"/></wsdl:input>
       <wsdl:output><soap:body use="literal"/></wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="AddNumbers">
-      <soap:operation soapAction="http://tempuri.org/AddNumbers" style="document"/>
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/AddNumbers" style="document"/>
       <wsdl:input><soap:body use="literal"/></wsdl:input>
       <wsdl:output><soap:body use="literal"/></wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GenerateJoke">
-      <soap:operation soapAction="http://tempuri.org/GenerateJoke" style="document"/>
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/GenerateJoke" style="document"/>
       <wsdl:input><soap:body use="literal"/></wsdl:input>
       <wsdl:output><soap:body use="literal"/></wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetJokes">
-      <soap:operation soapAction="http://tempuri.org/GetJokes" style="document"/>
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/GetJokes" style="document"/>
       <wsdl:input><soap:body use="literal"/></wsdl:input>
       <wsdl:output><soap:body use="literal"/></wsdl:output>
     </wsdl:operation>
