@@ -1,5 +1,4 @@
 import { WebService, WebServiceDefinition } from "../web-service";
-import path from "path";
 
 export class JokesWebService extends WebService {
   constructor() {
@@ -11,7 +10,7 @@ export class JokesWebService extends WebService {
         GenerateJoke: JokesWebService.GenerateJoke,
         GetJokes: JokesWebService.GetJokes,
       },
-      wsdlPath: path.join(__dirname, "index.wsdl"),
+      wsdlPath: "src/services/jokes/index.wsdl",
     };
 
     super(definition);
