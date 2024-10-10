@@ -144,7 +144,7 @@
   <!-- Service -->
   <wsdl:service name="JokesService">
     <wsdl:port name="JokesServiceSoap" binding="tns:JokesServiceSoap">
-      <soap:address location="http://localhost:3000/JokesService"/>
+      <soap:address location="https://aspharmony-production.up.railway.app/JokesService"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
