@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:s="http://www.w3.org/2001/XMLSchema"
+                  xmlns:tns="http://tempuri.org/"
+                  targetNamespace="http://tempuri.org/">
+
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <!-- GetInfo Operation -->
+      <s:element name="GetInfo">
+        <s:complexType/>
+      </s:element>
+      <s:element name="GetInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="Name" type="s:string"/>
+            <s:element minOccurs="1" maxOccurs="1" name="Version" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+
+      <!-- AddNumbers Operation -->
+      <s:element name="AddNumbers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="a" type="s:int"/>
+            <s:element minOccurs="1" maxOccurs="1" name="b" type="s:int"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddNumbersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddNumbersResult" type="s:int"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+
+      <!-- GenerateJoke Operation -->
+      <s:element name="GenerateJoke">
+        <s:complexType/>
+      </s:element>
+      <s:element name="GenerateJokeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GenerateJokeResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+
+      <!-- GetJokes Operation -->
+      <s:element name="GetJokes">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="count" type="s:int"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetJokesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="unbounded" name="GetJokesResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+
+  <!-- Messages -->
+  <wsdl:message name="GetInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInfo"/>
+  </wsdl:message>
+  <wsdl:message name="GetInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInfoResponse"/>
+  </wsdl:message>
+
+  <wsdl:message name="AddNumbersSoapIn">
+    <wsdl:part name="parameters" element="tns:AddNumbers"/>
+  </wsdl:message>
+  <wsdl:message name="AddNumbersSoapOut">
+    <wsdl:part name="parameters" element="tns:AddNumbersResponse"/>
+  </wsdl:message>
+
+  <wsdl:message name="GenerateJokeSoapIn">
+    <wsdl:part name="parameters" element="tns:GenerateJoke"/>
+  </wsdl:message>
+  <wsdl:message name="GenerateJokeSoapOut">
+    <wsdl:part name="parameters" element="tns:GenerateJokeResponse"/>
+  </wsdl:message>
+
+  <wsdl:message name="GetJokesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetJokes"/>
+  </wsdl:message>
+  <wsdl:message name="GetJokesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetJokesResponse"/>
+  </wsdl:message>
+
+  <!-- Port Type (Operations) -->
+  <wsdl:portType name="JokesServiceSoap">
+    <wsdl:operation name="GetInfo">
+      <wsdl:input message="tns:GetInfoSoapIn"/>
+      <wsdl:output message="tns:GetInfoSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="AddNumbers">
+      <wsdl:input message="tns:AddNumbersSoapIn"/>
+      <wsdl:output message="tns:AddNumbersSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateJoke">
+      <wsdl:input message="tns:GenerateJokeSoapIn"/>
+      <wsdl:output message="tns:GenerateJokeSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetJokes">
+      <wsdl:input message="tns:GetJokesSoapIn"/>
+      <wsdl:output message="tns:GetJokesSoapOut"/>
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <!-- SOAP Binding -->
+  <wsdl:binding name="JokesServiceSoap" type="tns:JokesServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetInfo">
+      <soap:operation soapAction="http://tempuri.org/GetInfo" style="document"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddNumbers">
+      <soap:operation soapAction="http://tempuri.org/AddNumbers" style="document"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateJoke">
+      <soap:operation soapAction="http://tempuri.org/GenerateJoke" style="document"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetJokes">
+      <soap:operation soapAction="http://tempuri.org/GetJokes" style="document"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <!-- Service -->
+  <wsdl:service name="JokesService">
+    <wsdl:port name="JokesServiceSoap" binding="tns:JokesServiceSoap">
+      <soap:address location="http://localhost:3000/JokesService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
