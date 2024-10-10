@@ -4,7 +4,7 @@ export class JokesWebService extends WebService {
   constructor() {
     const definition: WebServiceDefinition = {
       name: "JokesService",
-      service: {
+      methods: {
         GetInfo: JokesWebService.GetInfo,
         AddNumbers: JokesWebService.AddNumbers,
         GenerateJoke: JokesWebService.GenerateJoke,

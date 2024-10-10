@@ -4,22 +4,26 @@ import fs from "fs";
 
 export interface WebServiceDefinition {
   name: string;
-  service: Record<string, any>;
+  methods: Record<string, any>;
   wsdlPath: string;
 }
 
 export abstract class WebService {
   constructor(public definition: WebServiceDefinition) {}
 
+  private getSoapService() {
+    return {
+      [this.definition.name]: {
+        [this.definition.name + "Soap"]: this.definition.methods,
+      },
+    };
+  }
+
   setupRoute(app: express.Application) {
     const wsdlContent = fs.readFileSync(this.definition.wsdlPath, "utf8");
+    const soapService = this.getSoapService();
 
-    soap.listen(
-      app,
-      `/${this.definition.name}`,
-      this.definition.service,
-      wsdlContent
-    );
+    soap.listen(app, `/${this.definition.name}`, soapService, wsdlContent);
 
     app.get(`/${this.definition.name}`, (req, res) => {
       if (req.query.wsdl !== undefined) {
