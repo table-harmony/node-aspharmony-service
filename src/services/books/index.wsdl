@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:s="http://www.w3.org/2001/XMLSchema"
+                  xmlns:tns="https://aspharmony-production.up.railway.app/"
+                  targetNamespace="https://aspharmony-production.up.railway.app/">
+
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="https://aspharmony-production.up.railway.app/">
+      
+      <!-- GetAllBooks -->
+      <s:element name="GetAllBooks">
+        <s:complexType/>
+      </s:element>
+      <s:element name="GetAllBooksResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="unbounded" name="Book" type="tns:Book"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+
+      <!-- GetBook -->
+      <s:element name="GetBook">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetBookResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Book" type="tns:Book"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+
+      <!-- CreateBook -->
+      <s:element name="CreateBook">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="book" type="tns:Book"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateBookResponse">
+        <s:complexType/>
+      </s:element>
+
+      <!-- UpdateBook -->
+      <s:element name="UpdateBook">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="book" type="tns:Book"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateBookResponse">
+        <s:complexType/>
+      </s:element>
+
+      <!-- DeleteBook -->
+      <s:element name="DeleteBook">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteBookResponse">
+        <s:complexType/>
+      </s:element>
+
+      <!-- Book Type -->
+      <s:complexType name="Book">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="title" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="description" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="imageUrl" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="chapters" type="tns:ChapterArray"/>
+        </s:sequence>
+      </s:complexType>
+
+      <!-- Chapter Array Type -->
+      <s:complexType name="ChapterArray">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Chapter" type="tns:Chapter"/>
+        </s:sequence>
+      </s:complexType>
+
+      <!-- Chapter Type -->
+      <s:complexType name="Chapter">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="index" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="title" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="content" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+
+  <!-- Messages -->
+  <wsdl:message name="GetAllBooksSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllBooks"/>
+  </wsdl:message>
+  <wsdl:message name="GetAllBooksSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllBooksResponse"/>
+  </wsdl:message>
+
+  <wsdl:message name="GetBookSoapIn">
+    <wsdl:part name="parameters" element="tns:GetBook"/>
+  </wsdl:message>
+  <wsdl:message name="GetBookSoapOut">
+    <wsdl:part name="parameters" element="tns:GetBookResponse"/>
+  </wsdl:message>
+
+  <wsdl:message name="CreateBookSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateBook"/>
+  </wsdl:message>
+  <wsdl:message name="CreateBookSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateBookResponse"/>
+  </wsdl:message>
+
+  <wsdl:message name="UpdateBookSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateBook"/>
+  </wsdl:message>
+  <wsdl:message name="UpdateBookSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateBookResponse"/>
+  </wsdl:message>
+
+  <wsdl:message name="DeleteBookSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteBook"/>
+  </wsdl:message>
+  <wsdl:message name="DeleteBookSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteBookResponse"/>
+  </wsdl:message>
+
+  <!-- Port Type -->
+  <wsdl:portType name="BooksServiceSoap">
+    <wsdl:operation name="GetAllBooks">
+      <wsdl:input message="tns:GetAllBooksSoapIn"/>
+      <wsdl:output message="tns:GetAllBooksSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetBook">
+      <wsdl:input message="tns:GetBookSoapIn"/>
+      <wsdl:output message="tns:GetBookSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="CreateBook">
+      <wsdl:input message="tns:CreateBookSoapIn"/>
+      <wsdl:output message="tns:CreateBookSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateBook">
+      <wsdl:input message="tns:UpdateBookSoapIn"/>
+      <wsdl:output message="tns:UpdateBookSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteBook">
+      <wsdl:input message="tns:DeleteBookSoapIn"/>
+      <wsdl:output message="tns:DeleteBookSoapOut"/>
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <!-- Binding -->
+  <wsdl:binding name="BooksServiceSoap" type="tns:BooksServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetAllBooks">
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/GetAllBooks" style="document"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBook">
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/GetBook" style="document"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateBook">
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/CreateBook" style="document"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateBook">
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/UpdateBook" style="document"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteBook">
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/DeleteBook" style="document"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <!-- Service -->
+  <wsdl:service name="BooksService">
+    <wsdl:port name="BooksServiceSoap" binding="tns:BooksServiceSoap">
+      <soap:address location="https://aspharmony-production.up.railway.app/BooksService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,30 +1,20 @@
-import { WebService, WebServiceDefinition } from "../web-service";
+import { WebService } from "../web-service";
 
 export class JokesWebService extends WebService {
-  constructor() {
-    const definition: WebServiceDefinition = {
+  generateDefinition() {
+    return {
       name: "JokesService",
       methods: {
-        GetInfo: JokesWebService.GetInfo,
         AddNumbers: JokesWebService.AddNumbers,
         GenerateJoke: JokesWebService.GenerateJoke,
         GetJokes: JokesWebService.GetJokes,
       },
       wsdlPath: "src/services/jokes/index.wsdl",
     };
-
-    super(definition);
   }
 
-  private static async AddNumbers(args: { a: number; b: number }) {
+  private static AddNumbers(args: { a: number; b: number }) {
     return args.a + args.b;
-  }
-
-  private static async GetInfo() {
-    return {
-      Name: "JokesService",
-      Version: "1.0.0",
-    };
   }
 
   private static async GenerateJoke() {

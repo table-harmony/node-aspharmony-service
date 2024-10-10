@@ -9,9 +9,15 @@ export interface WebServiceDefinition {
 }
 
 export abstract class WebService {
-  constructor(public definition: WebServiceDefinition) {}
+  private definition: WebServiceDefinition;
 
-  private getSoapService() {
+  constructor() {
+    this.definition = this.generateDefinition();
+  }
+
+  abstract generateDefinition(): WebServiceDefinition;
+
+  private generateSoapService() {
     return {
       [this.definition.name]: {
         [this.definition.name + "Soap"]: this.definition.methods,
@@ -21,7 +27,7 @@ export abstract class WebService {
 
   setupRoute(app: express.Application) {
     const wsdlContent = fs.readFileSync(this.definition.wsdlPath, "utf8");
-    const soapService = this.getSoapService();
+    const soapService = this.generateSoapService();
 
     soap.listen(app, `/${this.definition.name}`, soapService, wsdlContent);
 

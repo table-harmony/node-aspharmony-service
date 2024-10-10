@@ -3,6 +3,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import { ServiceManager } from "./services/service-manager";
 import { JokesWebService } from "./services/jokes";
+import { BooksWebService } from "./services/books";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -18,6 +19,7 @@ app.use(
 const serviceManager = new ServiceManager();
 
 serviceManager.registerService(new JokesWebService());
+serviceManager.registerService(new BooksWebService());
 
 serviceManager.setupServices(app);
 
