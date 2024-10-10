@@ -15,7 +15,7 @@ type Book = {
   chapters: Chapter[];
 };
 
-export const books: Book[] = [];
+const books: Book[] = [];
 
 export class BooksWebService extends WebService {
   setupRoute(app: express.Application) {

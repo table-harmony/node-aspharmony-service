@@ -72,7 +72,11 @@
         </xsd:complexType>
       </xsd:element>
       <xsd:element name="CreateBookResponse">
-        <xsd:complexType/>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Book" type="tns:Book"/>
+          </xsd:sequence>
+        </xsd:complexType>
       </xsd:element>
 
       <!-- UpdateBook -->

@@ -2,8 +2,7 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import { ServiceManager } from "./services/service-manager";
-import { JokesWebService } from "./services/jokes";
-import { BooksWebService } from "./services/books";
+import { ServiceFactory } from "./services/service-factory";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -18,8 +17,12 @@ app.use(
 
 const serviceManager = new ServiceManager();
 
-serviceManager.registerService(new JokesWebService());
-serviceManager.registerService(new BooksWebService());
+const serviceFactory = new ServiceFactory();
+const jokesService = serviceFactory.createService("jokes");
+const booksService = serviceFactory.createService("books");
+
+serviceManager.registerService(jokesService);
+serviceManager.registerService(booksService);
 
 serviceManager.setupServices(app);
 
