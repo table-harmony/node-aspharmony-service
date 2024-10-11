@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:tns="https://aspharmony-production.up.railway.app/"
+                  targetNamespace="https://aspharmony-production.up.railway.app/">
+
+  <wsdl:types>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="https://aspharmony-production.up.railway.app/">
+      <!-- Define complex types for Book and Chapter -->
+      <xsd:complexType name="Chapter">
+        <xsd:sequence>
+          <xsd:element name="Index" type="xsd:int"/>
+          <xsd:element name="Title" type="xsd:string"/>
+          <xsd:element name="Content" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="Book">
+        <xsd:sequence>
+          <xsd:element name="Id" type="xsd:int"/>
+          <xsd:element name="Title" type="xsd:string"/>
+          <xsd:element name="Description" type="xsd:string"/>
+          <xsd:element name="ImageUrl" type="xsd:string"/>
+          <xsd:element name="Chapters" type="tns:Chapter" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <!-- Define request and response elements for each operation -->
+      <xsd:element name="GetBookRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="id" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetBookResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="book" type="tns:Book" minOccurs="0"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="GetAllBooksRequest">
+        <xsd:complexType/>
+      </xsd:element>
+      <xsd:element name="GetAllBooksResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="books" type="tns:Book" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="CreateBookRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="book" type="tns:Book"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="CreateBookResponse">
+        <xsd:complexType/>
+      </xsd:element>
+
+      <xsd:element name="UpdateBookRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="book" type="tns:Book"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="UpdateBookResponse">
+        <xsd:complexType/>
+      </xsd:element>
+
+      <xsd:element name="DeleteBookRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="id" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="DeleteBookResponse">
+        <xsd:complexType/>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+
+  <!-- Define messages for each operation -->
+  <wsdl:message name="GetBookInput">
+    <wsdl:part name="body" element="tns:GetBookRequest"/>
+  </wsdl:message>
+  <wsdl:message name="GetBookOutput">
+    <wsdl:part name="body" element="tns:GetBookResponse"/>
+  </wsdl:message>
+
+  <wsdl:message name="GetAllBooksInput">
+    <wsdl:part name="body" element="tns:GetAllBooksRequest"/>
+  </wsdl:message>
+  <wsdl:message name="GetAllBooksOutput">
+    <wsdl:part name="body" element="tns:GetAllBooksResponse"/>
+  </wsdl:message>
+
+  <wsdl:message name="CreateBookInput">
+    <wsdl:part name="body" element="tns:CreateBookRequest"/>
+  </wsdl:message>
+  <wsdl:message name="CreateBookOutput">
+    <wsdl:part name="body" element="tns:CreateBookResponse"/>
+  </wsdl:message>
+
+  <wsdl:message name="UpdateBookInput">
+    <wsdl:part name="body" element="tns:UpdateBookRequest"/>
+  </wsdl:message>
+  <wsdl:message name="UpdateBookOutput">
+    <wsdl:part name="body" element="tns:UpdateBookResponse"/>
+  </wsdl:message>
+
+  <wsdl:message name="DeleteBookInput">
+    <wsdl:part name="body" element="tns:DeleteBookRequest"/>
+  </wsdl:message>
+  <wsdl:message name="DeleteBookOutput">
+    <wsdl:part name="body" element="tns:DeleteBookResponse"/>
+  </wsdl:message>
+
+  <!-- Define port type with operations -->
+  <wsdl:portType name="BooksServicePortType">
+    <wsdl:operation name="GetBook">
+      <wsdl:input message="tns:GetBookInput"/>
+      <wsdl:output message="tns:GetBookOutput"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllBooks">
+      <wsdl:input message="tns:GetAllBooksInput"/>
+      <wsdl:output message="tns:GetAllBooksOutput"/>
+    </wsdl:operation>
+    <wsdl:operation name="CreateBook">
+      <wsdl:input message="tns:CreateBookInput"/>
+      <wsdl:output message="tns:CreateBookOutput"/>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateBook">
+      <wsdl:input message="tns:UpdateBookInput"/>
+      <wsdl:output message="tns:UpdateBookOutput"/>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteBook">
+      <wsdl:input message="tns:DeleteBookInput"/>
+      <wsdl:output message="tns:DeleteBookOutput"/>
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <!-- Define binding -->
+  <wsdl:binding name="BooksServiceBinding" type="tns:BooksServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetBook">
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/BooksService/GetBook"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllBooks">
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/BooksService/GetAllBooks"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateBook">
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/BooksService/CreateBook"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateBook">
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/BooksService/UpdateBook"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteBook">
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/BooksService/DeleteBook"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <!-- Define service -->
+  <wsdl:service name="BooksService">
+    <wsdl:port name="BooksServicePort" binding="tns:BooksServiceBinding">
+      <soap:address location="https://aspharmony-production.up.railway.app/BooksService"/>
+    </wsdl:port>
+  </wsdl:service>
+
+</wsdl:definitions>

@@ -42,7 +42,7 @@ export class JokesWebService extends WebService {
 
       const jokePromises = Array(jokeCount)
         .fill(null)
-        .map(() => JokesWebService.generateJoke());
+        .map(() => this.generateJoke());
 
       const jokes = await Promise.all(jokePromises);
       return { jokes: jokes.map((item) => item.joke) };

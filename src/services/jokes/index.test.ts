@@ -6,7 +6,7 @@ import { JokesWebService } from ".";
 
 const app = express();
 
-const BASE_PATH = "https://aspharmony-production.up.railway.app";
+const BASE_PATH = "http://localhost:3000";
 
 const jokesService = new JokesWebService();
 jokesService.setupRoute(app);
@@ -39,11 +39,8 @@ describe("JokesWebService", () => {
 
     expect(response.status).toBe(200);
 
-    const result = await xml2js.parseStringPromise(response.text);
-    const addNumbersResult =
-      result["soap:Envelope"]["soap:Body"][0]["tns:AddNumbersResponse"][0][
-        "sum"
-      ][0];
+    const result = await parseXmlResponse(response);
+    const addNumbersResult = result["tns:AddNumbersResponse"][0]["sum"][0];
 
     expect(addNumbersResult).toBe("8");
   });
@@ -64,11 +61,8 @@ describe("JokesWebService", () => {
 
     expect(response.status).toBe(200);
 
-    const result = await xml2js.parseStringPromise(response.text);
-    const joke =
-      result["soap:Envelope"]["soap:Body"][0]["tns:GenerateJokeResponse"][0][
-        "joke"
-      ][0];
+    const result = await parseXmlResponse(response);
+    const joke = result["tns:GenerateJokeResponse"][0]["joke"][0];
 
     expect(joke).toBeTruthy();
   });
@@ -91,16 +85,19 @@ describe("JokesWebService", () => {
 
     expect(response.status).toBe(200);
 
-    const result = await xml2js.parseStringPromise(response.text);
-    const jokes =
-      result["soap:Envelope"]["soap:Body"][0]["tns:GetJokesResponse"][0][
-        "jokes"
-      ];
+    const result = await parseXmlResponse(response);
+    const jokes = result["tns:GetJokesResponse"][0]["jokes"];
 
     expect(jokes).toBeTruthy();
     expect(jokes.length).toBe(3);
+
     jokes.forEach((joke: string) => {
       expect(joke).toBeTruthy();
     });
   });
 });
+
+async function parseXmlResponse(response: request.Response) {
+  const result = await xml2js.parseStringPromise(response.text);
+  return result["soap:Envelope"]["soap:Body"][0];
+}

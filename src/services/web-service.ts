@@ -15,8 +15,8 @@ export abstract class WebService {
     this.definition = this.generateDefinition();
   }
 
-  abstract generateDefinition(): WebServiceDefinition;
-  abstract getWSDL(): string;
+  protected abstract generateDefinition(): WebServiceDefinition;
+  protected abstract getWSDL(): string;
 
   private generateSoapService() {
     return {
