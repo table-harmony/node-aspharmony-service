@@ -28,11 +28,11 @@ export class BooksWebService extends WebService {
     return {
       name: "BooksService",
       methods: {
-        GetBook: this.getBook,
-        GetAllBooks: this.getAllBooks,
-        CreateBook: this.createBook,
-        UpdateBook: this.updateBook,
-        DeleteBook: this.deleteBook,
+        GetBook: this.getBook.bind(this),
+        GetAllBooks: this.getAllBooks.bind(this),
+        CreateBook: this.createBook.bind(this),
+        UpdateBook: this.updateBook.bind(this),
+        DeleteBook: this.deleteBook.bind(this),
       },
       wsdl: this.getWSDL(),
     };
