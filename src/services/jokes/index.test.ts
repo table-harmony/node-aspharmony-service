@@ -4,9 +4,9 @@ import request from "supertest";
 import xml2js from "xml2js";
 import { JokesWebService } from ".";
 
-const app = express();
+const BASE_PATH = "https://aspharmony-production.up.railway.app";
 
-const BASE_PATH = "http://localhost:3000";
+const app = express();
 
 const jokesService = new JokesWebService();
 jokesService.setupRoute(app);

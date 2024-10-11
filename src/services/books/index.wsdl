@@ -6,7 +6,6 @@
 
   <wsdl:types>
     <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="https://aspharmony-production.up.railway.app/">
-      <!-- Define complex types for Book and Chapter -->
       <xsd:complexType name="Chapter">
         <xsd:sequence>
           <xsd:element name="Index" type="xsd:int"/>
@@ -25,11 +24,10 @@
         </xsd:sequence>
       </xsd:complexType>
 
-      <!-- Define request and response elements for each operation -->
       <xsd:element name="GetBookRequest">
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="id" type="xsd:int"/>
+            <xsd:element name="Id" type="xsd:int"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -77,7 +75,7 @@
       <xsd:element name="DeleteBookRequest">
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="id" type="xsd:int"/>
+            <xsd:element name="Id" type="xsd:int"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>

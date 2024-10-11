@@ -10,9 +10,9 @@ export class JokesWebService extends WebService {
     return {
       name: "JokesService",
       methods: {
-        addNumbers: JokesWebService.bind(this),
-        generateJoke: this.generateJoke.bind(this),
-        getJokes: this.getJokes.bind(this),
+        AddNumbers: this.addNumbers.bind(this),
+        GenerateJoke: this.generateJoke.bind(this),
+        GetJokes: this.getJokes.bind(this),
       },
       wsdl: this.getWSDL(),
     };

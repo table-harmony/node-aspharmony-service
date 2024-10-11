@@ -23,7 +23,7 @@ export class BooksWebService extends WebService {
   setupRoute(app: express.Application): void {
     super.setupRoute(app);
 
-    app.get("/books", async (req, res) => {
+    app.get("/books.xml", async (req, res) => {
       try {
         const builder = new Builder();
         const xml = builder.buildObject({ books: { book: this.books } });
@@ -54,8 +54,8 @@ export class BooksWebService extends WebService {
     };
   }
 
-  async getBook(args: { id: number }) {
-    const book = this.books.find((b) => b.Id === args.id) || null;
+  async getBook(args: { Id: number }) {
+    const book = this.books.find((b) => b.Id === args.Id) || null;
     return { book };
   }
 
@@ -74,7 +74,7 @@ export class BooksWebService extends WebService {
     }
   }
 
-  async deleteBook(args: { id: number }) {
-    this.books = this.books.filter((b) => b.Id !== args.id);
+  async deleteBook(args: { Id: number }) {
+    this.books = this.books.filter((b) => b.Id !== args.Id);
   }
 }
