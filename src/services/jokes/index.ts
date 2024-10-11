@@ -10,19 +10,19 @@ export class JokesWebService extends WebService {
     return {
       name: "JokesService",
       methods: {
-        AddNumbers: JokesWebService.addNumbers,
-        GenerateJoke: JokesWebService.generateJoke,
-        GetJokes: JokesWebService.getJokes,
+        addNumbers: JokesWebService.bind(this),
+        generateJoke: this.generateJoke.bind(this),
+        getJokes: this.getJokes.bind(this),
       },
       wsdl: this.getWSDL(),
     };
   }
 
-  private static addNumbers(args: { a: number; b: number }) {
+  addNumbers(args: { a: number; b: number }) {
     return { sum: args.a + args.b };
   }
 
-  private static async generateJoke() {
+  async generateJoke() {
     try {
       const response = await fetch(
         "https://v2.jokeapi.dev/joke/Any?type=single"
@@ -34,7 +34,7 @@ export class JokesWebService extends WebService {
     }
   }
 
-  private static async getJokes(args: { count: number }) {
+  async getJokes(args: { count: number }) {
     const count = args.count;
 
     try {
