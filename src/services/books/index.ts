@@ -1,6 +1,7 @@
 import fs from "fs";
 import { WebService } from "../web-service";
 import { parseString, Builder } from "xml2js";
+import express from "express";
 
 type Chapter = {
   Index: number;
@@ -20,6 +21,26 @@ export class BooksWebService extends WebService {
   private books: Book[] = [];
   private xmlFilePath: string = "src/services/books/storage.xml";
 
+  constructor() {
+    super();
+    this.loadXml();
+  }
+
+  setupRoute(app: express.Application): void {
+    super.setupRoute(app);
+
+    app.get("/books", async (req, res) => {
+      try {
+        const data = fs.readFileSync(this.xmlFilePath, "utf8");
+
+        res.header("Content-Type", "application/xml");
+        res.send(data);
+      } catch (error) {
+        res.status(500).send("Failed to load books.");
+      }
+    });
+  }
+
   getWSDL() {
     return fs.readFileSync("src/services/books/index.wsdl", "utf8");
   }
@@ -36,43 +57,6 @@ export class BooksWebService extends WebService {
       },
       wsdl: this.getWSDL(),
     };
-  }
-
-  constructor() {
-    super();
-    this.loadXml();
-  }
-
-  private loadXml() {
-    if (!fs.existsSync(this.xmlFilePath)) throw new Error("XML file not found");
-
-    const data = fs.readFileSync(this.xmlFilePath, "utf8");
-
-    parseString(data, (err, result) => {
-      if (err) throw new Error("Failed to parse XML");
-
-      if (!result.Books) return;
-
-      this.books = result.Books.Book.map((b: any) => ({
-        Id: parseInt(b.Id[0], 10),
-        Title: b.Title[0],
-        Description: b.Description[0],
-        ImageUrl: b.ImageUrl[0],
-        Chapters: b.Chapters
-          ? b.Chapters.map((c: any) => ({
-              Index: parseInt(c.Index[0], 10),
-              Title: c.Title[0],
-              Content: c.Content[0],
-            }))
-          : [],
-      }));
-    });
-  }
-
-  private saveXml() {
-    const builder = new Builder();
-    const xml = builder.buildObject({ books: { book: this.books } });
-    fs.writeFileSync(this.xmlFilePath, xml);
   }
 
   async getBook(args: { id: number }) {
@@ -100,5 +84,38 @@ export class BooksWebService extends WebService {
   async deleteBook(args: { id: number }) {
     this.books = this.books.filter((b) => b.Id !== args.id);
     this.saveXml();
+  }
+
+  private loadXml() {
+    if (!fs.existsSync(this.xmlFilePath)) throw new Error("XML file not found");
+
+    const data = fs.readFileSync(this.xmlFilePath, "utf8");
+
+    parseString(data, (err, result) => {
+      if (err) throw new Error("Failed to parse XML");
+
+      if (!result.books) return;
+
+      this.books = result.books.book.map((b: any) => ({
+        Id: parseInt(b.Id[0], 10),
+        Title: b.Title[0],
+        Description: b.Description[0],
+        ImageUrl: b.ImageUrl[0],
+        Chapters:
+          b.Chapters && b.Chapters[0] !== ""
+            ? b.Chapters[0].Chapter.map((c: any) => ({
+                Index: parseInt(c.Index[0], 10),
+                Title: c.Title[0],
+                Content: c.Content[0],
+              }))
+            : [],
+      }));
+    });
+  }
+
+  private saveXml() {
+    const builder = new Builder();
+    const xml = builder.buildObject({ books: { book: this.books } });
+    fs.writeFileSync(this.xmlFilePath, xml);
   }
 }
