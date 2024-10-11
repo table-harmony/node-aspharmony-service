@@ -5,7 +5,7 @@ import fs from "fs";
 export interface WebServiceDefinition {
   name: string;
   methods: Record<string, any>;
-  wsdlPath: string;
+  wsdl: string;
 }
 
 export abstract class WebService {
@@ -26,20 +26,18 @@ export abstract class WebService {
   }
 
   setupRoute(app: express.Application) {
-    const wsdlContent = fs.readFileSync(this.definition.wsdlPath, "utf8");
+    const { name, wsdl } = this.definition;
     const soapService = this.generateSoapService();
 
-    soap.listen(app, `/${this.definition.name}`, soapService, wsdlContent);
+    soap.listen(app, `/${name}`, soapService, wsdl);
 
-    app.get(`/${this.definition.name}`, (req, res) => {
+    app.get(`/${name}`, (req, res) => {
       if (req.query.wsdl !== undefined) {
         res.type("application/xml");
-        res.send(wsdlContent);
+        res.send(wsdl);
       } else {
         res.type("text");
-        res.send(
-          `To view the WSDL for ${this.definition.name}, add ?wsdl to the URL.`
-        );
+        res.send(`To view the WSDL for ${name}, add ?wsdl to the URL.`);
       }
     });
   }

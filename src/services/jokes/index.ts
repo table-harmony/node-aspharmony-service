@@ -1,3 +1,4 @@
+import fs from "fs";
 import { WebService } from "../web-service";
 
 export class JokesWebService extends WebService {
@@ -9,7 +10,7 @@ export class JokesWebService extends WebService {
         GenerateJoke: JokesWebService.GenerateJoke,
         GetJokes: JokesWebService.GetJokes,
       },
-      wsdlPath: "src/services/jokes/index.wsdl",
+      wsdl: fs.readFileSync("src/services/jokes/index.wsdl", "utf8"),
     };
   }
 
@@ -27,9 +28,10 @@ export class JokesWebService extends WebService {
     const MAX_JOKES = 50;
     const jokeCount = Math.min(Math.abs(count), MAX_JOKES);
 
-    const jokePromises = Array(jokeCount).map(() =>
-      JokesWebService.GenerateJoke()
-    );
+    const jokePromises = Array(jokeCount)
+      .fill(null)
+      .map(() => JokesWebService.GenerateJoke());
+
     return Promise.all(jokePromises);
   }
 }

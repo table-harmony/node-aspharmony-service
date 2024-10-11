@@ -19,10 +19,8 @@ const serviceManager = new ServiceManager();
 
 const serviceFactory = new ServiceFactory();
 const jokesService = serviceFactory.createService("jokes");
-const booksService = serviceFactory.createService("books");
 
 serviceManager.registerService(jokesService);
-serviceManager.registerService(booksService);
 
 serviceManager.setupServices(app);
 
