@@ -2,20 +2,23 @@ import fs from "fs";
 import { WebService } from "../web-service";
 
 export class JokesWebService extends WebService {
+  getWSDL() {
+    return fs.readFileSync("src/services/jokes/index.wsdl", "utf8");
+  }
+
   generateDefinition() {
     return {
       name: "JokesService",
       methods: {
         AddNumbers: JokesWebService.AddNumbers,
         GenerateJoke: JokesWebService.GenerateJoke,
-        GetJokes: JokesWebService.GetJokes,
       },
-      wsdl: fs.readFileSync("src/services/jokes/index.wsdl", "utf8"),
+      wsdl: this.getWSDL(),
     };
   }
 
   private static AddNumbers(args: { a: number; b: number }) {
-    return args.a + args.b;
+    return { sum: args.a + args.b };
   }
 
   private static async GenerateJoke() {
@@ -24,9 +27,9 @@ export class JokesWebService extends WebService {
         "https://v2.jokeapi.dev/joke/Any?type=single"
       );
       const data = await response.json();
-      return data.joke;
+      return { joke: data.joke };
     } catch (error) {
-      return "Failed to generate joke.";
+      return { joke: "Failed to generate joke." };
     }
   }
 

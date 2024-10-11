@@ -16,11 +16,12 @@ export abstract class WebService {
   }
 
   abstract generateDefinition(): WebServiceDefinition;
+  abstract getWSDL(): string;
 
   private generateSoapService() {
     return {
       [this.definition.name]: {
-        [this.definition.name + "Soap"]: this.definition.methods,
+        [this.definition.name + "Port"]: this.definition.methods,
       },
     };
   }

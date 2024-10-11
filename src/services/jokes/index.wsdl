@@ -1,123 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
                   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-                  xmlns:s="http://www.w3.org/2001/XMLSchema"
                   xmlns:tns="https://aspharmony-production.up.railway.app/"
                   targetNamespace="https://aspharmony-production.up.railway.app/">
 
-  <!-- Types (Data Structures) -->
   <wsdl:types>
-    <s:schema elementFormDefault="qualified" targetNamespace="https://aspharmony-production.up.railway.app/">
-    
-      <!-- AddNumbers Operation -->
-      <s:element name="AddNumbers">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="a" type="s:int"/>
-            <s:element minOccurs="1" maxOccurs="1" name="b" type="s:int"/>
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="AddNumbersResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="AddNumbersResult" type="s:int"/>
-          </s:sequence>
-        </s:complexType>
-      </s:element>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="https://aspharmony-production.up.railway.app/">      
+      <xsd:element name="AddNumbersRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="a" type="xsd:int"/>
+            <xsd:element name="b" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="AddNumbersResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="sum" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
 
-      <!-- GenerateJoke Operation -->
-      <s:element name="GenerateJoke">
-        <s:complexType/>
-      </s:element>
-      <s:element name="GenerateJokeResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="GenerateJokeResult" type="s:string"/>
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-
-      <!-- GetJokes Operation -->
-      <s:element name="GetJokes">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="count" type="s:int"/>
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="GetJokesResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="unbounded" name="GetJokesResult" type="s:string"/>
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-    </s:schema>
+      <xsd:element name="GenerateJokeRequest">
+        <xsd:complexType></xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GenerateJokeResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="joke" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
   </wsdl:types>
-
-  <!-- Messages -->
-  <wsdl:message name="AddNumbersSoapIn">
-    <wsdl:part name="parameters" element="tns:AddNumbers"/>
+  
+  <wsdl:message name="AddNumbersInput">
+    <wsdl:part name="body" element="tns:AddNumbersRequest"/>
   </wsdl:message>
-  <wsdl:message name="AddNumbersSoapOut">
-    <wsdl:part name="parameters" element="tns:AddNumbersResponse"/>
-  </wsdl:message>
-
-  <wsdl:message name="GenerateJokeSoapIn">
-    <wsdl:part name="parameters" element="tns:GenerateJoke"/>
-  </wsdl:message>
-  <wsdl:message name="GenerateJokeSoapOut">
-    <wsdl:part name="parameters" element="tns:GenerateJokeResponse"/>
+  <wsdl:message name="AddNumbersOutput">
+    <wsdl:part name="body" element="tns:AddNumbersResponse"/>
   </wsdl:message>
 
-  <wsdl:message name="GetJokesSoapIn">
-    <wsdl:part name="parameters" element="tns:GetJokes"/>
+  <wsdl:message name="GenerateJokeInput">
+    <wsdl:part name="body" element="tns:GenerateJokeRequest"/>
   </wsdl:message>
-  <wsdl:message name="GetJokesSoapOut">
-    <wsdl:part name="parameters" element="tns:GetJokesResponse"/>
+  <wsdl:message name="GenerateJokeOutput">
+    <wsdl:part name="body" element="tns:GenerateJokeResponse"/>
   </wsdl:message>
 
-  <!-- Port Type (Operations) -->
-  <wsdl:portType name="JokesServiceSoap">
+  <wsdl:portType name="JokesServicePortType">
     <wsdl:operation name="AddNumbers">
-      <wsdl:input message="tns:AddNumbersSoapIn"/>
-      <wsdl:output message="tns:AddNumbersSoapOut"/>
+      <wsdl:input message="tns:AddNumbersInput"/>
+      <wsdl:output message="tns:AddNumbersOutput"/>
     </wsdl:operation>
     <wsdl:operation name="GenerateJoke">
-      <wsdl:input message="tns:GenerateJokeSoapIn"/>
-      <wsdl:output message="tns:GenerateJokeSoapOut"/>
-    </wsdl:operation>
-    <wsdl:operation name="GetJokes">
-      <wsdl:input message="tns:GetJokesSoapIn"/>
-      <wsdl:output message="tns:GetJokesSoapOut"/>
+      <wsdl:input message="tns:GenerateJokeInput"/>
+      <wsdl:output message="tns:GenerateJokeOutput"/>
     </wsdl:operation>
   </wsdl:portType>
 
-  <!-- SOAP Binding -->
-  <wsdl:binding name="JokesServiceSoap" type="tns:JokesServiceSoap">
-    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+  <wsdl:binding name="JokesServiceBinding" type="tns:JokesServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsdl:operation name="AddNumbers">
-      <soap:operation soapAction="https://aspharmony-production.up.railway.app/JokesService/AddNumbers" style="document"/>
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/JokesService/AddNumbers"/>
       <wsdl:input><soap:body use="literal"/></wsdl:input>
       <wsdl:output><soap:body use="literal"/></wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GenerateJoke">
-      <soap:operation soapAction="https://aspharmony-production.up.railway.app/JokesService/GenerateJoke" style="document"/>
-      <wsdl:input><soap:body use="literal"/></wsdl:input>
-      <wsdl:output><soap:body use="literal"/></wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetJokes">
-      <soap:operation soapAction="https://aspharmony-production.up.railway.app/JokesService/GetJokes" style="document"/>
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/JokesService/GenerateJoke"/>
       <wsdl:input><soap:body use="literal"/></wsdl:input>
       <wsdl:output><soap:body use="literal"/></wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
 
-  <!-- Service -->
   <wsdl:service name="JokesService">
-    <wsdl:port name="JokesServiceSoap" binding="tns:JokesServiceSoap">
+    <wsdl:port name="JokesServicePort" binding="tns:JokesServiceBinding">
       <soap:address location="https://aspharmony-production.up.railway.app/JokesService"/>
     </wsdl:port>
   </wsdl:service>
+
 </wsdl:definitions>

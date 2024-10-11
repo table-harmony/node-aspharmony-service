@@ -6,10 +6,7 @@ import { JokesWebService } from ".";
 
 const app = express();
 
-const BASE_PATH =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:3000"
-    : "https://aspharmony-production.up.railway.app";
+const BASE_PATH = "https://aspharmony-production.up.railway.app";
 
 const jokesService = new JokesWebService();
 jokesService.setupRoute(app);
@@ -70,33 +67,5 @@ describe("JokesWebService", () => {
       result["soap:Envelope"]["soap:Body"][0]["GenerateJokeResponse"][0]["_"];
 
     expect(joke).toBeTruthy();
-  });
-
-  it("should get multiple jokes", async () => {
-    const requestBody = `
-      <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-        <soap:Body>
-          <GetJokes xmlns="${BASE_PATH}">
-            <count>3</count>
-          </GetJokes>
-        </soap:Body>
-      </soap:Envelope>
-    `;
-
-    const response = await request(app)
-      .post("/JokesService")
-      .set("Content-Type", "text/xml")
-      .send(requestBody);
-
-    expect(response.status).toBe(200);
-
-    const result = await xml2js.parseStringPromise(response.text);
-    const jokes = result["soap:Envelope"]["soap:Body"][0]["GetJokesResponse"];
-
-    expect(jokes).toHaveLength(3);
-
-    jokes.forEach((joke: string) => {
-      expect(joke).toBeTruthy();
-    });
   });
 });
