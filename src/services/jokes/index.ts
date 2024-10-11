@@ -10,18 +10,19 @@ export class JokesWebService extends WebService {
     return {
       name: "JokesService",
       methods: {
-        AddNumbers: JokesWebService.AddNumbers,
-        GenerateJoke: JokesWebService.GenerateJoke,
+        AddNumbers: JokesWebService.addNumbers,
+        GenerateJoke: JokesWebService.generateJoke,
+        GetJokes: JokesWebService.getJokes,
       },
       wsdl: this.getWSDL(),
     };
   }
 
-  private static AddNumbers(args: { a: number; b: number }) {
+  private static addNumbers(args: { a: number; b: number }) {
     return { sum: args.a + args.b };
   }
 
-  private static async GenerateJoke() {
+  private static async generateJoke() {
     try {
       const response = await fetch(
         "https://v2.jokeapi.dev/joke/Any?type=single"
@@ -33,7 +34,7 @@ export class JokesWebService extends WebService {
     }
   }
 
-  private static async GetJokes(args: { count: number }) {
+  private static async getJokes(args: { count: number }) {
     const count = args.count;
 
     try {
@@ -41,11 +42,12 @@ export class JokesWebService extends WebService {
 
       const jokePromises = Array(jokeCount)
         .fill(null)
-        .map(() => JokesWebService.GenerateJoke());
+        .map(() => JokesWebService.generateJoke());
 
-      return await Promise.all(jokePromises);
+      const jokes = await Promise.all(jokePromises);
+      return { jokes: jokes.map((item) => item.joke) };
     } catch (error) {
-      return Array(count).fill("Failed to fetch joke.");
+      return { jokes: Array(count).fill("Failed to fetch joke.") };
     }
   }
 }

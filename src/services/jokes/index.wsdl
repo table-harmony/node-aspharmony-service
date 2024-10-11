@@ -32,6 +32,21 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
+
+      <xsd:element name="GetJokesRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="count" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetJokesResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="jokes" type="xsd:string" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
     </xsd:schema>
   </wsdl:types>
   
@@ -49,6 +64,13 @@
     <wsdl:part name="body" element="tns:GenerateJokeResponse"/>
   </wsdl:message>
 
+  <wsdl:message name="GetJokesInput">
+    <wsdl:part name="body" element="tns:GetJokesRequest"/>
+  </wsdl:message>
+  <wsdl:message name="GetJokesOutput">
+    <wsdl:part name="body" element="tns:GetJokesResponse"/>
+  </wsdl:message>
+
   <wsdl:portType name="JokesServicePortType">
     <wsdl:operation name="AddNumbers">
       <wsdl:input message="tns:AddNumbersInput"/>
@@ -57,6 +79,10 @@
     <wsdl:operation name="GenerateJoke">
       <wsdl:input message="tns:GenerateJokeInput"/>
       <wsdl:output message="tns:GenerateJokeOutput"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetJokes">
+      <wsdl:input message="tns:GetJokesInput"/>
+      <wsdl:output message="tns:GetJokesOutput"/>
     </wsdl:operation>
   </wsdl:portType>
 
@@ -69,6 +95,11 @@
     </wsdl:operation>
     <wsdl:operation name="GenerateJoke">
       <soap:operation soapAction="https://aspharmony-production.up.railway.app/JokesService/GenerateJoke"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetJokes">
+      <soap:operation soapAction="https://aspharmony-production.up.railway.app/JokesService/GetJokes"/>
       <wsdl:input><soap:body use="literal"/></wsdl:input>
       <wsdl:output><soap:body use="literal"/></wsdl:output>
     </wsdl:operation>
