@@ -19,19 +19,30 @@ export class JokesWebService extends WebService {
   }
 
   private static async GenerateJoke() {
-    const response = await fetch("https://v2.jokeapi.dev/joke/Any?type=single");
-    const data = await response.json();
-    return data.joke;
+    try {
+      const response = await fetch(
+        "https://v2.jokeapi.dev/joke/Any?type=single"
+      );
+      const data = await response.json();
+      return data.joke;
+    } catch (error) {
+      return "Failed to generate joke.";
+    }
   }
 
-  private static async GetJokes(count: number) {
-    const MAX_JOKES = 50;
-    const jokeCount = Math.min(Math.abs(count), MAX_JOKES);
+  private static async GetJokes(args: { count: number }) {
+    const count = args.count;
 
-    const jokePromises = Array(jokeCount)
-      .fill(null)
-      .map(() => JokesWebService.GenerateJoke());
+    try {
+      const jokeCount = Math.max(1, Math.min(count, 50));
 
-    return Promise.all(jokePromises);
+      const jokePromises = Array(jokeCount)
+        .fill(null)
+        .map(() => JokesWebService.GenerateJoke());
+
+      return await Promise.all(jokePromises);
+    } catch (error) {
+      return Array(count).fill("Failed to fetch joke.");
+    }
   }
 }

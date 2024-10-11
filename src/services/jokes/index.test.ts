@@ -38,7 +38,6 @@ describe("JokesWebService", () => {
     expect(response.status).toBe(200);
 
     const result = await xml2js.parseStringPromise(response.text);
-
     const addNumbersResult =
       result["soap:Envelope"]["soap:Body"][0]["AddNumbersResponse"][0]["_"];
 
@@ -62,7 +61,6 @@ describe("JokesWebService", () => {
     expect(response.status).toBe(200);
 
     const result = await xml2js.parseStringPromise(response.text);
-
     const joke =
       result["soap:Envelope"]["soap:Body"][0]["GenerateJokeResponse"][0]["_"];
 
@@ -88,11 +86,7 @@ describe("JokesWebService", () => {
     expect(response.status).toBe(200);
 
     const result = await xml2js.parseStringPromise(response.text);
-
-    const jokes =
-      result["soap:Envelope"]["soap:Body"][0]["GetJokesResponse"][0][
-        "GetJokesResult"
-      ];
+    const jokes = result["soap:Envelope"]["soap:Body"][0]["GetJokesResponse"];
 
     expect(jokes).toHaveLength(3);
 
