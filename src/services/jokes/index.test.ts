@@ -6,6 +6,11 @@ import { JokesWebService } from ".";
 
 const app = express();
 
+const BASE_PATH =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3000"
+    : "https://aspharmony-production.up.railway.app";
+
 const jokesService = new JokesWebService();
 jokesService.setupRoute(app);
 
@@ -22,7 +27,7 @@ describe("JokesWebService", () => {
     const requestBody = `
       <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
         <soap:Body>
-          <AddNumbers xmlns="https://aspharmony-production.up.railway.app/">
+          <AddNumbers xmlns="${BASE_PATH}">
             <a>5</a>
             <b>3</b>
           </AddNumbers>
@@ -48,7 +53,7 @@ describe("JokesWebService", () => {
     const requestBody = `
       <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
         <soap:Body>
-          <GenerateJoke xmlns="https://aspharmony-production.up.railway.app/" />
+          <GenerateJoke xmlns="${BASE_PATH}" />
         </soap:Body>
       </soap:Envelope>
     `;
@@ -71,7 +76,7 @@ describe("JokesWebService", () => {
     const requestBody = `
       <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
         <soap:Body>
-          <GetJokes xmlns="https://aspharmony-production.up.railway.app/">
+          <GetJokes xmlns="${BASE_PATH}">
             <count>3</count>
           </GetJokes>
         </soap:Body>
