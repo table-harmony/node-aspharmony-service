@@ -1,6 +1,5 @@
 const soap = require("soap");
 import express from "express";
-import fs from "fs";
 
 export interface WebServiceDefinition {
   name: string;
@@ -9,7 +8,7 @@ export interface WebServiceDefinition {
 }
 
 export abstract class WebService {
-  private definition: WebServiceDefinition;
+  protected definition: WebServiceDefinition;
 
   constructor() {
     this.definition = this.generateDefinition();
