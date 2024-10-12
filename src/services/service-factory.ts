@@ -3,12 +3,12 @@ import { BooksWebService } from "./books";
 import { WebService } from "./web-service";
 
 export class ServiceFactory {
-  createService(serviceName: string): WebService {
+  static createService(serviceName: string): WebService {
     switch (serviceName) {
       case "jokes":
-        return new JokesWebService();
+        return JokesWebService.getInstance();
       case "books":
-        return new BooksWebService();
+        return BooksWebService.getInstance();
       default:
         throw new Error("Invalid service name");
     }

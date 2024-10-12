@@ -2,13 +2,13 @@ import express from "express";
 
 import request from "supertest";
 import xml2js from "xml2js";
-import { JokesWebService } from ".";
+import { ServiceFactory } from "../service-factory";
 
-const BASE_PATH = "http://localhost:3000";
+const BASE_PATH = "https://aspharmony-production.up.railway.app";
 
 const app = express();
 
-const jokesService = new JokesWebService();
+const jokesService = ServiceFactory.createService("jokes");
 jokesService.setupRoute(app);
 
 describe("JokesWebService", () => {

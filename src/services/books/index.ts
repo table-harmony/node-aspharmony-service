@@ -19,6 +19,18 @@ type Book = {
 
 export class BooksWebService extends WebService {
   private books: Book[] = [];
+  private static instance: BooksWebService;
+
+  private constructor() {
+    super();
+  }
+
+  static getInstance() {
+    if (!this.instance) {
+      this.instance = new BooksWebService();
+    }
+    return this.instance;
+  }
 
   setupRoute(app: express.Application) {
     super.setupRoute(app);

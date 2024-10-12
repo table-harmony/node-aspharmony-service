@@ -4,6 +4,19 @@ import { Builder } from "xml2js";
 import { WebService } from "../web-service";
 
 export class JokesWebService extends WebService {
+  private static instance: JokesWebService;
+
+  private constructor() {
+    super();
+  }
+
+  static getInstance() {
+    if (!this.instance) {
+      this.instance = new JokesWebService();
+    }
+    return this.instance;
+  }
+
   setupRoute(app: express.Application) {
     super.setupRoute(app);
 

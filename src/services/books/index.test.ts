@@ -1,12 +1,12 @@
 import express from "express";
 import request from "supertest";
 import xml2js from "xml2js";
-import { BooksWebService } from ".";
+import { ServiceFactory } from "../service-factory";
 
 const BASE_PATH = "https://aspharmony-production.up.railway.app";
 
 const app = express();
-const booksService = new BooksWebService();
+const booksService = ServiceFactory.createService("books");
 booksService.setupRoute(app);
 
 describe("BooksWebService", () => {
