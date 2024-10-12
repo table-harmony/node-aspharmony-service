@@ -20,7 +20,7 @@ type Book = {
 export class BooksWebService extends WebService {
   private books: Book[] = [];
 
-  setupRoute(app: express.Application): void {
+  setupRoute(app: express.Application) {
     super.setupRoute(app);
 
     app.get("/books.xml", async (req, res) => {

@@ -4,7 +4,7 @@ import request from "supertest";
 import xml2js from "xml2js";
 import { JokesWebService } from ".";
 
-const BASE_PATH = "https://aspharmony-production.up.railway.app";
+const BASE_PATH = "http://localhost:3000";
 
 const app = express();
 
@@ -68,25 +68,12 @@ describe("JokesWebService", () => {
   });
 
   it("should get multiple jokes", async () => {
-    const requestBody = `
-      <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-        <soap:Body>
-          <GetJokesRequest xmlns="${BASE_PATH}">
-            <count>3</count>
-          </GetJokesRequest>
-        </soap:Body>
-      </soap:Envelope>
-    `;
-
-    const response = await request(app)
-      .post("/JokesService")
-      .set("Content-Type", "text/xml")
-      .send(requestBody);
+    const response = await request(app).get("/jokes.xml?count=3");
 
     expect(response.status).toBe(200);
 
-    const result = await parseXmlResponse(response);
-    const jokes = result["tns:GetJokesResponse"][0]["jokes"];
+    const result = await xml2js.parseStringPromise(response.text);
+    const jokes = result["jokes"]["joke"];
 
     expect(jokes).toBeTruthy();
     expect(jokes.length).toBe(3);

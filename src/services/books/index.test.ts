@@ -22,7 +22,7 @@ describe("BooksWebService", () => {
     const requestBody = `
       <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
         <soap:Body>
-          <CreateBookRequest xmlns=${BASE_PATH}>
+          <CreateBookRequest xmlns="${BASE_PATH}">
             <book>
               <Id>1</Id>
               <Title>Test Book</Title>

@@ -1,7 +1,30 @@
 import fs from "fs";
+import express from "express";
+import { Builder } from "xml2js";
 import { WebService } from "../web-service";
 
 export class JokesWebService extends WebService {
+  setupRoute(app: express.Application) {
+    super.setupRoute(app);
+
+    app.get("/jokes.xml", async (req, res) => {
+      const MAX_COUNT = 50;
+      const count = Math.min(Number(req.query.count) || 1, MAX_COUNT);
+
+      try {
+        const { jokes } = await this.getJokes({ count });
+
+        const builder = new Builder();
+        const xml = builder.buildObject({ jokes: { joke: jokes } });
+
+        res.header("Content-Type", "application/xml");
+        res.send(xml);
+      } catch (error) {
+        res.status(500).send("Failed to load jokes.");
+      }
+    });
+  }
+
   getWSDL() {
     return fs.readFileSync("src/services/jokes/index.wsdl", "utf8");
   }
@@ -12,7 +35,6 @@ export class JokesWebService extends WebService {
       methods: {
         AddNumbers: this.addNumbers.bind(this),
         GenerateJoke: this.generateJoke.bind(this),
-        GetJokes: this.getJokes.bind(this),
       },
       wsdl: this.getWSDL(),
     };
