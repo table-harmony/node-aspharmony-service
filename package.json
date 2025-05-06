@@ -2,11 +2,12 @@
   "name": "node-aspharmony-service",
   "version": "1.0.0",
   "description": "SOAP Web Service for ASPHarmony",
-  "main": "dist/app.ts",
+  "main": "dist/app.js",
   "scripts": {
-    "start": "node dist/app.ts",
+    "start": "node dist/app.js",
     "build": "tsc",
     "dev": "ts-node src/app.ts",
+    "postinstall": "npm run build",
     "test": "jest"
   },
   "keywords": [
