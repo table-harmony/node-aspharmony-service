@@ -3,19 +3,19 @@ import express from "express";
 import { Builder } from "xml2js";
 import { WebService } from "../web-service";
 
-type Chapter = {
+interface Chapter {
   Index: number;
   Title: string;
   Content: string;
-};
+}
 
-type Book = {
+interface Book {
   Id: number;
   Title: string;
   Description: string;
   ImageUrl: string;
   Chapters: Chapter[];
-};
+}
 
 export class BooksWebService extends WebService {
   private books: Book[] = [];
@@ -66,12 +66,12 @@ export class BooksWebService extends WebService {
     };
   }
 
-  async getBook(args: { Id: number }) {
+  getBook(args: { Id: number }) {
     const book = this.books.find((b) => b.Id === args.Id) || null;
     return { book };
   }
 
-  async getAllBooks() {
+  getAllBooks() {
     return { books: this.books };
   }
 
